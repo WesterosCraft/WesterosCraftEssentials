@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "westeroscraft-essentials",
+	"version": "${version}",
+	"name": "WesterosCraft Essentials",
+	"description": "WesterosCraftCore is a custom Fabric mod that handles various requirements for the WesterosCraft server",
+	"authors": [
+		"geeberry",
+		"mikeprimm"
+	],
+	"contact": {
+		"homepage": "https://westeroscraft.com/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/westeroscraft-essentials/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"westeroscraft.WesterosCraftEssentials"
+		],
+		"fabric-datagen": [
+			"westeroscraft.WesterosCraftEssentialsDataGenerator"
+		]
+	},
+	"mixins": [
+		"westeroscraft-essentials.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.18.4",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
