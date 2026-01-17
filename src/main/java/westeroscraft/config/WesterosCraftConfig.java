@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WesterosCraftConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger("westeroscraft-essentials");
@@ -17,11 +19,31 @@ public class WesterosCraftConfig {
     public static boolean disableIceMelt = false;
     public static boolean disableSnowMelt = false;
     public static boolean snowLayerSurviveAny = false;
+    public static boolean doPreventLeafDecay = false;
+    public static boolean disableCropGrowth = false;
+    public static boolean cropSurviveAny = false;
+    public static AutoRestoreConfig autoRestore = new AutoRestoreConfig();
+
+    public static class AutoRestoreConfig {
+        public boolean enabled = true;
+        public int delaySeconds = 30;
+        public String permission = "westeroscraft.autorestore";
+        public boolean allDoors = false;
+        public boolean allGates = false;
+        public boolean allTrapDoors = false;
+        public List<String> doors = new ArrayList<>();
+        public List<String> gates = new ArrayList<>();
+        public List<String> trapDoors = new ArrayList<>();
+    }
 
     private static class ConfigData {
-        boolean disableIceMelt = false;
-        boolean disableSnowMelt = false;
-        boolean snowLayerSurviveAny = false;
+        boolean disableIceMelt = true;
+        boolean disableSnowMelt = true;
+        boolean snowLayerSurviveAny = true;
+        boolean doPreventLeafDecay = true;
+        boolean disableCropGrowth = true;
+        boolean cropSurviveAny = true;
+        AutoRestoreConfig autoRestore = new AutoRestoreConfig();
     }
 
     public static void load() {
@@ -34,7 +56,16 @@ public class WesterosCraftConfig {
                 disableIceMelt = data.disableIceMelt;
                 disableSnowMelt = data.disableSnowMelt;
                 snowLayerSurviveAny = data.snowLayerSurviveAny;
-                LOGGER.info("Loaded config: disableIceMelt={}, disableSnowMelt={}, snowLayerSurviveAny={}", disableIceMelt, disableSnowMelt, snowLayerSurviveAny);
+                doPreventLeafDecay = data.doPreventLeafDecay;
+                disableCropGrowth = data.disableCropGrowth;
+                cropSurviveAny = data.cropSurviveAny;
+                if (data.autoRestore != null) {
+                    autoRestore = data.autoRestore;
+                }
+                LOGGER.info("Loaded config: disableIceMelt={}, disableSnowMelt={}, snowLayerSurviveAny={}, doPreventLeafDecay={}, disableCropGrowth={}, cropSurviveAny={}",
+                    disableIceMelt, disableSnowMelt, snowLayerSurviveAny, doPreventLeafDecay, disableCropGrowth, cropSurviveAny);
+                LOGGER.info("AutoRestore config: enabled={}, delaySeconds={}, permission={}",
+                    autoRestore.enabled, autoRestore.delaySeconds, autoRestore.permission);
             } else {
                 saveDefaults();
             }

@@ -4,7 +4,12 @@
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"IceBlockMixin",
-		"SnowLayerBlockMixin"
+		"SnowLayerBlockMixin",
+		"LeavesBlockMixin",
+		"CropBlockMixin",
+		"DoorBlockMixin",
+		"TrapDoorBlockMixin",
+		"FenceGateBlockMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

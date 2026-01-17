@@ -55,6 +55,35 @@ LuckPermsIntegration.hasPermission(serverPlayer, "westeroscraft.somepermission")
 LuckPermsIntegration.hasPermissionStrict(serverPlayer, "westeroscraft.somepermission");
 ```
 
+## Auto-Restore System
+
+The `restore/AutoRestoreManager.java` handles automatic restoration of doors, trapdoors, and fence gates for players with a specific permission. Used for creative servers where guests can interact with doors but changes should revert.
+
+**How it works:**
+1. Mixins (`DoorBlockMixin`, `TrapDoorBlockMixin`, `FenceGateBlockMixin`) intercept player interactions
+2. If player has the configured permission (default: `westeroscraft.autorestore`), the original state is recorded
+3. After a configurable delay, the block reverts to its original state
+4. Creative mode players are exempt - their changes are permanent and cancel pending restores
+
+**Config structure** (in `config/westeroscraft-essentials.json`):
+```json
+{
+  "autoRestore": {
+    "enabled": true,
+    "delaySeconds": 30,
+    "permission": "westeroscraft.autorestore",
+    "allDoors": false,
+    "allGates": false,
+    "allTrapDoors": false,
+    "doors": ["minecraft:oak_door"],
+    "gates": ["minecraft:oak_fence_gate"],
+    "trapDoors": ["minecraft:oak_trapdoor"]
+  }
+}
+```
+
+Use `allDoors`/`allGates`/`allTrapDoors` to apply to all blocks of that type, or specify individual block IDs in the lists.
+
 ## Key Dependencies
 
 - Fabric Loader 0.18.4+
