@@ -31,6 +31,12 @@ public class WesterosCraftConfig {
     public static boolean mushroomSurviveAny = false;
     public static AutoRestoreConfig autoRestore = new AutoRestoreConfig();
     public static boolean forceAdventureMode = true;
+    public static MountConfig mount = new MountConfig();
+
+    public static class MountConfig {
+        public boolean enabled = true;
+        public String permission = "wcessentials.horse";
+    }
 
     public static class AutoRestoreConfig {
         public boolean enabled = true;
@@ -60,6 +66,7 @@ public class WesterosCraftConfig {
         boolean mushroomSurviveAny = true;
         boolean forceAdventureMode = true;
         AutoRestoreConfig autoRestore = new AutoRestoreConfig();
+        MountConfig mount = new MountConfig();
     }
 
     public static void load() {
@@ -87,10 +94,15 @@ public class WesterosCraftConfig {
                 if (data.autoRestore != null) {
                     autoRestore = data.autoRestore;
                 }
+                if (data.mount != null) {
+                    mount = data.mount;
+                }
                 LOGGER.info("Loaded config: disableIceMelt={}, disableSnowMelt={}, snowLayerSurviveAny={}, doPreventLeafDecay={}, disableCropGrowth={}, cropSurviveAny={}, disableBambooSpread={}, bambooSurviveAny={}, disableGrassSpread={}, disableFluidTicking={}, blockWitherSpawn={}, disableMushroomGrowFade={}, mushroomSurviveAny={}, forceAdventureMode={}",
                     disableIceMelt, disableSnowMelt, snowLayerSurviveAny, doPreventLeafDecay, disableCropGrowth, cropSurviveAny, disableBambooSpread, bambooSurviveAny, disableGrassSpread, disableFluidTicking, blockWitherSpawn, disableMushroomGrowFade, mushroomSurviveAny, forceAdventureMode);
                 LOGGER.info("AutoRestore config: enabled={}, delaySeconds={}, permission={}",
                     autoRestore.enabled, autoRestore.delaySeconds, autoRestore.permission);
+                LOGGER.info("Mount config: enabled={}, permission={}",
+                    mount.enabled, mount.permission);
             } else {
                 saveDefaults();
             }
