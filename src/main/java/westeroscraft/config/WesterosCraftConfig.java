@@ -22,7 +22,15 @@ public class WesterosCraftConfig {
     public static boolean doPreventLeafDecay = false;
     public static boolean disableCropGrowth = false;
     public static boolean cropSurviveAny = false;
+    public static boolean disableBambooSpread = false;
+    public static boolean bambooSurviveAny = false;
+    public static boolean disableGrassSpread = false;
+    public static boolean disableFluidTicking = false;
+    public static boolean blockWitherSpawn = false;
+    public static boolean disableMushroomGrowFade = false;
+    public static boolean mushroomSurviveAny = false;
     public static AutoRestoreConfig autoRestore = new AutoRestoreConfig();
+    public static boolean forceAdventureMode = true;
 
     public static class AutoRestoreConfig {
         public boolean enabled = true;
@@ -43,6 +51,14 @@ public class WesterosCraftConfig {
         boolean doPreventLeafDecay = true;
         boolean disableCropGrowth = true;
         boolean cropSurviveAny = true;
+        boolean disableBambooSpread = true;
+        boolean bambooSurviveAny = true;
+        boolean disableGrassSpread = true;
+        boolean disableFluidTicking = true;
+        boolean blockWitherSpawn = true;
+        boolean disableMushroomGrowFade = true;
+        boolean mushroomSurviveAny = true;
+        boolean forceAdventureMode = true;
         AutoRestoreConfig autoRestore = new AutoRestoreConfig();
     }
 
@@ -53,17 +69,26 @@ public class WesterosCraftConfig {
             if (Files.exists(CONFIG_FILE)) {
                 String json = Files.readString(CONFIG_FILE);
                 ConfigData data = GSON.fromJson(json, ConfigData.class);
+                save(data);
                 disableIceMelt = data.disableIceMelt;
                 disableSnowMelt = data.disableSnowMelt;
                 snowLayerSurviveAny = data.snowLayerSurviveAny;
                 doPreventLeafDecay = data.doPreventLeafDecay;
                 disableCropGrowth = data.disableCropGrowth;
                 cropSurviveAny = data.cropSurviveAny;
+                disableBambooSpread = data.disableBambooSpread;
+                bambooSurviveAny = data.bambooSurviveAny;
+                disableGrassSpread = data.disableGrassSpread;
+                disableFluidTicking = data.disableFluidTicking;
+                blockWitherSpawn = data.blockWitherSpawn;
+                disableMushroomGrowFade = data.disableMushroomGrowFade;
+                mushroomSurviveAny = data.mushroomSurviveAny;
+                forceAdventureMode = data.forceAdventureMode;
                 if (data.autoRestore != null) {
                     autoRestore = data.autoRestore;
                 }
-                LOGGER.info("Loaded config: disableIceMelt={}, disableSnowMelt={}, snowLayerSurviveAny={}, doPreventLeafDecay={}, disableCropGrowth={}, cropSurviveAny={}",
-                    disableIceMelt, disableSnowMelt, snowLayerSurviveAny, doPreventLeafDecay, disableCropGrowth, cropSurviveAny);
+                LOGGER.info("Loaded config: disableIceMelt={}, disableSnowMelt={}, snowLayerSurviveAny={}, doPreventLeafDecay={}, disableCropGrowth={}, cropSurviveAny={}, disableBambooSpread={}, bambooSurviveAny={}, disableGrassSpread={}, disableFluidTicking={}, blockWitherSpawn={}, disableMushroomGrowFade={}, mushroomSurviveAny={}, forceAdventureMode={}",
+                    disableIceMelt, disableSnowMelt, snowLayerSurviveAny, doPreventLeafDecay, disableCropGrowth, cropSurviveAny, disableBambooSpread, bambooSurviveAny, disableGrassSpread, disableFluidTicking, blockWitherSpawn, disableMushroomGrowFade, mushroomSurviveAny, forceAdventureMode);
                 LOGGER.info("AutoRestore config: enabled={}, delaySeconds={}, permission={}",
                     autoRestore.enabled, autoRestore.delaySeconds, autoRestore.permission);
             } else {
@@ -82,6 +107,16 @@ public class WesterosCraftConfig {
             LOGGER.info("Created default config file");
         } catch (IOException e) {
             LOGGER.error("Failed to create default config", e);
+        }
+    }
+
+    private static void save(ConfigData data) {
+        try {
+            String json = GSON.toJson(data);
+            Files.writeString(CONFIG_FILE, json);
+            LOGGER.info("Updated config file with current defaults");
+        } catch (IOException e) {
+            LOGGER.error("Failed to save config", e);
         }
     }
 }

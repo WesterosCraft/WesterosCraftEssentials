@@ -5,8 +5,13 @@
 	"mixins": [
 		"IceBlockMixin",
 		"SnowLayerBlockMixin",
+		"SpreadingSnowyDirtBlockMixin",
 		"LeavesBlockMixin",
 		"CropBlockMixin",
+		"BambooBlockMixin",
+		"LiquidBlockMixin",
+		"MushroomBlockMixin",
+		"WitherSkullBlockMixin",
 		"DoorBlockMixin",
 		"TrapDoorBlockMixin",
 		"FenceGateBlockMixin"

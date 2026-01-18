@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import westeroscraft.adventure.GameModeEnforcer;
 import westeroscraft.config.WesterosCraftConfig;
 import westeroscraft.restore.AutoRestoreManager;
 
@@ -19,6 +20,9 @@ public class WesterosCraftEssentials implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		WesterosCraftConfig.load();
+
+		// Initialize game mode enforcer
+		GameModeEnforcer.init();
 
 		// Register server tick event for auto-restore processing
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
