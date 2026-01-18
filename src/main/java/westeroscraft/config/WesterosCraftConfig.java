@@ -35,7 +35,7 @@ public class WesterosCraftConfig {
     public static class AutoRestoreConfig {
         public boolean enabled = true;
         public int delaySeconds = 30;
-        public String permission = "westeroscraft.autorestore";
+        public String permission = "wcessentials.autorestore";
         public boolean allDoors = false;
         public boolean allGates = false;
         public boolean allTrapDoors = false;

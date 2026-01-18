@@ -153,7 +153,8 @@ public class AutoRestoreManager {
                     boolean currentOpen = state.getValue(DoorBlock.OPEN);
                     if (currentOpen != info.originalOpen) {
                         doorBlock.setOpen(null, pending.level, state, pending.pos, info.originalOpen);
-                        LOGGER.debug("Restored door at {} to open={}", pending.pos, info.originalOpen);
+                        String blockId = BuiltInRegistries.BLOCK.getKey(block).toString();
+                        LOGGER.info("Auto-restored door {} at {} to open={}", blockId, pending.pos, info.originalOpen);
                     }
                 }
                 iter.remove();
@@ -179,7 +180,8 @@ public class AutoRestoreManager {
                         pending.level.setBlock(pending.pos, state, 10);
                         pending.level.levelEvent(null, info.originalOpen ? 1008 : 1014, pending.pos, 0);
                         pending.level.gameEvent(null, info.originalOpen ? GameEvent.BLOCK_OPEN : GameEvent.BLOCK_CLOSE, pending.pos);
-                        LOGGER.debug("Restored gate at {} to open={}", pending.pos, info.originalOpen);
+                        String blockId = BuiltInRegistries.BLOCK.getKey(block).toString();
+                        LOGGER.info("Auto-restored fence gate {} at {} to open={}", blockId, pending.pos, info.originalOpen);
                     }
                 }
                 iter.remove();
@@ -210,7 +212,8 @@ public class AutoRestoreManager {
                         if (state.getValue(TrapDoorBlock.WATERLOGGED)) {
                             pending.level.scheduleTick(pending.pos, Fluids.WATER, Fluids.WATER.getTickDelay(pending.level));
                         }
-                        LOGGER.debug("Restored trapdoor at {} to open={}", pending.pos, info.originalOpen);
+                        String blockId = BuiltInRegistries.BLOCK.getKey(block).toString();
+                        LOGGER.info("Auto-restored trapdoor {} at {} to open={}", blockId, pending.pos, info.originalOpen);
                     }
                 }
                 iter.remove();
