@@ -15,7 +15,8 @@
 		"DoorBlockMixin",
 		"TrapDoorBlockMixin",
 		"FenceGateBlockMixin",
-		"HorseInvoker"
+		"HorseInvoker",
+		"PlayerMountDataMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

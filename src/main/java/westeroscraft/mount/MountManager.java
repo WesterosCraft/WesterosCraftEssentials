@@ -18,14 +18,13 @@ import westeroscraft.config.WesterosCraftConfig;
 import westeroscraft.mixin.HorseInvoker;
 
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Manages horse lifecycle and player-horse tracking for the /mount command.
+ * Mount data is persisted on players via mixin (survives server restarts).
  */
 public class MountManager {
     private static final Logger LOGGER = LoggerFactory.getLogger("westeroscraft-essentials");
-    private static final ConcurrentHashMap<UUID, UUID> playerToHorse = new ConcurrentHashMap<>();
 
     /**
      * Initialize event handlers for mount cleanup.
@@ -34,17 +33,29 @@ public class MountManager {
         // Despawn horse when player disconnects
         // Must schedule on main thread since DISCONNECT fires on Netty IO thread
         ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
-            UUID playerUuid = handler.getPlayer().getUUID();
-            ServerLevel level = handler.getPlayer().serverLevel();
-            server.execute(() -> despawnMount(playerUuid, level));
+            ServerPlayer player = handler.getPlayer();
+            IPlayerMountData mountData = (IPlayerMountData) player;
+            UUID horseUuid = mountData.westeroscraft$getMountUuid();
+            ServerLevel level = player.serverLevel();
+
+            if (horseUuid != null) {
+                server.execute(() -> {
+                    if (level.getEntity(horseUuid) instanceof Horse horse) {
+                        horse.discard();
+                        LOGGER.info("Despawned mount {} for disconnecting player {}", horseUuid, player.getName().getString());
+                    }
+                    // Clear the mount data
+                    mountData.westeroscraft$setHasMount(false);
+                    mountData.westeroscraft$setMountUuid(null);
+                });
+            }
         });
 
         // Despawn horse when player changes dimension
         ServerEntityWorldChangeEvents.AFTER_PLAYER_CHANGE_WORLD.register((player, origin, destination) -> {
             // Only despawn if player actually changed to a different dimension
             if (origin != destination) {
-                UUID playerUuid = player.getUUID();
-                despawnMount(playerUuid, origin);
+                despawnMount(player, origin);
             }
         });
 
@@ -55,7 +66,7 @@ public class MountManager {
      * Check if a player has an active mount.
      */
     public static boolean hasMount(ServerPlayer player) {
-        return playerToHorse.containsKey(player.getUUID());
+        return ((IPlayerMountData) player).westeroscraft$hasMount();
     }
 
     /**
@@ -93,17 +104,21 @@ public class MountManager {
         // Add horse to the world
         level.addFreshEntity(horse);
 
-        // Track the horse
-        playerToHorse.put(player.getUUID(), horse.getUUID());
+        // Track the horse on player data (persisted)
+        IPlayerMountData mountData = (IPlayerMountData) player;
+        mountData.westeroscraft$setHasMount(true);
+        mountData.westeroscraft$setMountUuid(horse.getUUID());
 
         LOGGER.info("Spawned mount for player {} (horse UUID: {})", player.getName().getString(), horse.getUUID());
     }
 
     /**
-     * Despawn a player's mount from any level.
+     * Despawn a player's mount from a specific level.
      */
-    public static void despawnMount(UUID playerUuid, ServerLevel level) {
-        UUID horseUuid = playerToHorse.remove(playerUuid);
+    public static void despawnMount(ServerPlayer player, ServerLevel level) {
+        IPlayerMountData mountData = (IPlayerMountData) player;
+        UUID horseUuid = mountData.westeroscraft$getMountUuid();
+
         if (horseUuid == null) {
             return;
         }
@@ -111,14 +126,18 @@ public class MountManager {
         // Find and remove the horse entity
         if (level.getEntity(horseUuid) instanceof Horse horse) {
             horse.discard();
-            LOGGER.info("Despawned mount {} for player {}", horseUuid, playerUuid);
+            LOGGER.info("Despawned mount {} for player {}", horseUuid, player.getName().getString());
         }
+
+        // Clear the mount data
+        mountData.westeroscraft$setHasMount(false);
+        mountData.westeroscraft$setMountUuid(null);
     }
 
     /**
-     * Despawn a player's mount using their ServerPlayer reference.
+     * Despawn a player's mount using their current level.
      */
     public static void despawnMount(ServerPlayer player) {
-        despawnMount(player.getUUID(), player.serverLevel());
+        despawnMount(player, player.serverLevel());
     }
 }
