@@ -5,13 +5,17 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.animal.horse.Markings;
+import net.minecraft.world.entity.animal.horse.Variant;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import westeroscraft.config.WesterosCraftConfig;
+import westeroscraft.mixin.HorseInvoker;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -55,7 +59,7 @@ public class MountManager {
     }
 
     /**
-     * Spawn a tamed, saddled horse for the player and mount them on it.
+     * Spawn a tamed, saddled horse near the player.
      */
     public static void spawnMount(ServerPlayer player) {
         if (!WesterosCraftConfig.mount.enabled) {
@@ -66,6 +70,15 @@ public class MountManager {
 
         // Create horse entity using constructor
         Horse horse = new Horse(EntityType.HORSE, level);
+
+        // Randomize the horse's appearance
+        RandomSource random = level.getRandom();
+        Variant[] variants = Variant.values();
+        Markings[] markings = Markings.values();
+        ((HorseInvoker) horse).invokeSetVariantAndMarkings(
+                variants[random.nextInt(variants.length)],
+                markings[random.nextInt(markings.length)]
+        );
 
         // Position horse at player's location with player's rotation
         horse.moveTo(player.getX(), player.getY(), player.getZ(), player.getYRot(), 0.0F);
@@ -82,9 +95,6 @@ public class MountManager {
 
         // Track the horse
         playerToHorse.put(player.getUUID(), horse.getUUID());
-
-        // Mount the player on the horse
-        player.startRiding(horse);
 
         LOGGER.info("Spawned mount for player {} (horse UUID: {})", player.getName().getString(), horse.getUUID());
     }
