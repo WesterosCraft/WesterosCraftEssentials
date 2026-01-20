@@ -1,15 +1,12 @@
 package westeroscraft;
 
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import westeroscraft.adventure.GameModeEnforcer;
 import westeroscraft.config.WesterosCraftConfig;
-import westeroscraft.mount.MountCommand;
-import westeroscraft.mount.MountManager;
 import westeroscraft.restore.AutoRestoreManager;
 
 public class WesterosCraftEssentials implements ModInitializer {
@@ -21,11 +18,6 @@ public class WesterosCraftEssentials implements ModInitializer {
 		WesterosCraftConfig.load();
 
 		GameModeEnforcer.init();
-		MountManager.init();
-
-		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
-			MountCommand.register(dispatcher);
-		});
 
 		ServerTickEvents.END_SERVER_TICK.register(server -> {
 			AutoRestoreManager.tick();
