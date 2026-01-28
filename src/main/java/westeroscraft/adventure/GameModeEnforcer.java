@@ -10,7 +10,8 @@ import westeroscraft.config.WesterosCraftConfig;
 
 /**
  * Enforces Adventure mode for players with the wcessentials.forceadventuremode permission.
- * Players with this permission are blocked from CREATIVE and SURVIVAL modes, but can use SPECTATOR.
+ * On login: Players are always forced to ADVENTURE mode.
+ * On dimension change: Only CREATIVE is blocked; ADVENTURE, SURVIVAL, and SPECTATOR are allowed.
  * Uses LuckPerms for permission checking (fail-closed - no effect if LuckPerms not installed).
  */
 public class GameModeEnforcer {
@@ -28,18 +29,28 @@ public class GameModeEnforcer {
             return;
         }
 
+        if (!LuckPermsIntegration.hasPermissionStrict(player, PERMISSION)) {
+            return;
+        }
+
         GameType currentMode = player.gameMode.getGameModeForPlayer();
 
-        // Only force to ADVENTURE if player is in CREATIVE or SURVIVAL
-        // SPECTATOR mode is allowed for players with this permission
-        if (currentMode == GameType.CREATIVE || currentMode == GameType.SURVIVAL) {
-            if (LuckPermsIntegration.hasPermissionStrict(player, PERMISSION)) {
-                LOGGER.info("Player {} forced from {} to ADVENTURE mode ({})",
-                    player.getDisplayName().getString(),
-                    currentMode.getName(),
-                    context);
-                player.setGameMode(GameType.ADVENTURE);
-            }
+        // On JOIN: always force to ADVENTURE
+        // On DIMENSION_CHANGE: only force if in CREATIVE
+        boolean shouldEnforce;
+        if ("DIMENSION_CHANGE".equals(context)) {
+            shouldEnforce = (currentMode == GameType.CREATIVE);
+        } else {
+            // LOGIN and other contexts: always enforce
+            shouldEnforce = (currentMode != GameType.ADVENTURE);
+        }
+
+        if (shouldEnforce) {
+            LOGGER.info("Player {} forced from {} to ADVENTURE mode ({})",
+                player.getDisplayName().getString(),
+                currentMode.getName(),
+                context);
+            player.setGameMode(GameType.ADVENTURE);
         }
     }
 
