@@ -15,7 +15,9 @@
 		"DoorBlockMixin",
 		"TrapDoorBlockMixin",
 		"FenceGateBlockMixin",
-		"ServerPlayerMixin"
+		"ServerPlayerMixin",
+		"ClientLevelMixin",
+		"ClientLevelDataMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
