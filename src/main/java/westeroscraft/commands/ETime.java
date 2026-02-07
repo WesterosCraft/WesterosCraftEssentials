@@ -1,6 +1,6 @@
 package westeroscraft.commands;
 
-public enum Time {
+public enum ETime {
     SUNRISE(0),
     DAY(1000),
     MORNING(2000),
@@ -12,7 +12,7 @@ public enum Time {
 
     public final int time;
 
-    Time(int i) {
+    ETime(int i) {
         this.time = i;
     }
 }
