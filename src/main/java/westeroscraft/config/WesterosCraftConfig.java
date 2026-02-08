@@ -38,6 +38,7 @@ public class WesterosCraftConfig {
     public static boolean sugarCaneSurviveAny = false;
     public static boolean disableVineGrowFade = false;
     public static boolean vineSurviveAny = false;
+    public static boolean disableDripstoneTransfer = false;
     public static boolean disableGrassSpread = false;
     public static boolean disableFluidTicking = false;
     public static boolean blockWitherSpawn = false;
@@ -87,6 +88,7 @@ public class WesterosCraftConfig {
         boolean sugarCaneSurviveAny = true;
         boolean disableVineGrowFade = true;
         boolean vineSurviveAny = true;
+        boolean disableDripstoneTransfer = true;
         AutoRestoreConfig autoRestore = new AutoRestoreConfig();
     }
 
@@ -120,6 +122,7 @@ public class WesterosCraftConfig {
                 sugarCaneSurviveAny = data.sugarCaneSurviveAny;
                 disableVineGrowFade = data.disableVineGrowFade;
                 vineSurviveAny = data.vineSurviveAny;
+                disableDripstoneTransfer = data.disableDripstoneTransfer;
                 disableGrassSpread = data.disableGrassSpread;
                 disableFluidTicking = data.disableFluidTicking;
                 blockWitherSpawn = data.blockWitherSpawn;
