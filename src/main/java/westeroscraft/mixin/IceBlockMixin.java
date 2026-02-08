@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import westeroscraft.config.WesterosCraftConfig;
 
 @Mixin(IceBlock.class)
-public class IceBlockMixin {
+public abstract class IceBlockMixin {
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
     private void onRandomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
         if (WesterosCraftConfig.disableIceMelt) {

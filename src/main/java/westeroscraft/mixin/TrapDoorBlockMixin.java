@@ -18,7 +18,7 @@ import westeroscraft.config.WesterosCraftConfig;
 import westeroscraft.restore.AutoRestoreManager;
 
 @Mixin(TrapDoorBlock.class)
-public class TrapDoorBlockMixin {
+public abstract class TrapDoorBlockMixin {
 
     @Unique
     private static final ThreadLocal<Boolean> originalOpenState = new ThreadLocal<>();

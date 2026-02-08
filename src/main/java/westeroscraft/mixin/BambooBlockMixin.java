@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import westeroscraft.config.WesterosCraftConfig;
 
 @Mixin(BambooStalkBlock.class)
-public class BambooBlockMixin {
+public abstract class BambooBlockMixin {
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)
     private void onTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
         if (WesterosCraftConfig.disableBambooSpread) {

@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import westeroscraft.config.WesterosCraftConfig;
 
 @Mixin(LiquidBlock.class)
-public class LiquidBlockMixin {
+public abstract class LiquidBlockMixin {
     @Inject(method = "isRandomlyTicking", at = @At("HEAD"), cancellable = true)
     private void onIsRandomlyTicking(BlockState state, CallbackInfoReturnable<Boolean> cir) {
         if (WesterosCraftConfig.disableFluidTicking) {

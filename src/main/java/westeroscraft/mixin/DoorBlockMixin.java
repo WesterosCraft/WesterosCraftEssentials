@@ -18,7 +18,7 @@ import westeroscraft.config.WesterosCraftConfig;
 import westeroscraft.restore.AutoRestoreManager;
 
 @Mixin(DoorBlock.class)
-public class DoorBlockMixin {
+public abstract class DoorBlockMixin {
 
     @Unique
     private static final ThreadLocal<Boolean> originalOpenState = new ThreadLocal<>();
