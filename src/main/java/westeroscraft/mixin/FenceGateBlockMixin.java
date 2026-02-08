@@ -18,7 +18,7 @@ import westeroscraft.config.WesterosCraftConfig;
 import westeroscraft.restore.AutoRestoreManager;
 
 @Mixin(FenceGateBlock.class)
-public class FenceGateBlockMixin {
+public abstract class FenceGateBlockMixin {
 
     @Unique
     private static final ThreadLocal<Boolean> originalOpenState = new ThreadLocal<>();

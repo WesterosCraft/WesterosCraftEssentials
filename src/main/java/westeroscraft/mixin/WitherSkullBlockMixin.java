@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import westeroscraft.config.WesterosCraftConfig;
 
 @Mixin(WitherSkullBlock.class)
-public class WitherSkullBlockMixin {
+public abstract class WitherSkullBlockMixin {
     @Inject(method = "checkSpawn(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/SkullBlockEntity;)V", at = @At("HEAD"), cancellable = true)
     private static void onCheckSpawn(Level level, BlockPos pos, SkullBlockEntity skullBlockEntity, CallbackInfo ci) {
         if (WesterosCraftConfig.blockWitherSpawn) {

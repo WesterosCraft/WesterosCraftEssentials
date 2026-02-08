@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import westeroscraft.adventure.GameModeEnforcer;
 
 @Mixin(ServerPlayer.class)
-public class ServerPlayerMixin {
+public abstract class ServerPlayerMixin {
 
     @Inject(method = "changeDimension", at = @At("RETURN"))
     private void onDimensionChange(DimensionTransition transition,

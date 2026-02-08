@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import westeroscraft.config.WesterosCraftConfig;
 
 @Mixin(CropBlock.class)
-public class CropBlockMixin {
+public abstract class CropBlockMixin {
     @Inject(method = "randomTick", at = @At("HEAD"), cancellable = true)
     private void onRandomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random, CallbackInfo ci) {
         if (WesterosCraftConfig.disableCropGrowth) {
