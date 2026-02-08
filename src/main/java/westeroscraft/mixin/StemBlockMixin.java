@@ -11,8 +11,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import westeroscraft.config.WesterosCraftConfig;
 
-import java.util.Random;
-
 @Mixin(StemBlock.class) 
 public abstract class StemBlockMixin {
 	protected StemBlockMixin() {}

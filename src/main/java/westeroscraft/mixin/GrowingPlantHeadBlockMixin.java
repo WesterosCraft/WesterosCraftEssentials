@@ -12,8 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import westeroscraft.config.WesterosCraftConfig;
 
-import java.util.Random;
-
 @Mixin(GrowingPlantHeadBlock.class)
 public abstract class GrowingPlantHeadBlockMixin {
     protected GrowingPlantHeadBlockMixin() {}

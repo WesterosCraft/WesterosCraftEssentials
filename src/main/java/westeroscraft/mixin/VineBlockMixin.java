@@ -13,8 +13,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import westeroscraft.config.WesterosCraftConfig;
 
-import java.util.Random;
-
 @Mixin(VineBlock.class) 
 public abstract class VineBlockMixin {
 	protected VineBlockMixin() {}

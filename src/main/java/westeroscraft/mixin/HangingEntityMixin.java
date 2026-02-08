@@ -7,6 +7,7 @@ import net.minecraft.world.entity.decoration.BlockAttachedEntity;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import westeroscraft.config.WesterosCraftConfig;
 
@@ -17,7 +18,7 @@ public abstract class HangingEntityMixin extends BlockAttachedEntity {
     }
 
     @Override
-    public InteractionResult interact(Player player, InteractionHand hand) {
+    public @NotNull InteractionResult interact(Player player, InteractionHand hand) {
         if ((!player.isCreative()) && WesterosCraftConfig.blockHangingItemChanges) {
             return InteractionResult.CONSUME;
         }
