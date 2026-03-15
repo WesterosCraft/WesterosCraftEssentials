@@ -23,6 +23,7 @@
 		"MinecartTNTMixin",
 		"MushroomBlockMixin",
 		"NetherWartBlockMixin",
+		"PlayerDropMixin",
 		"PointedDripstoneBlockMixin",
 		"PrimedTntMixin",
 		"ServerPlayerMixin",

@@ -45,6 +45,7 @@ public class WesterosCraftConfig {
     public static boolean disableMushroomGrowFade = false;
     public static boolean mushroomSurviveAny = false;
     public static AutoRestoreConfig autoRestore = new AutoRestoreConfig();
+    public static boolean disableItemDrops = true;
     public static boolean forceAdventureMode = true;
 
     public static class AutoRestoreConfig {
@@ -73,6 +74,7 @@ public class WesterosCraftConfig {
         boolean blockWitherSpawn = true;
         boolean disableMushroomGrowFade = true;
         boolean mushroomSurviveAny = true;
+        boolean disableItemDrops = true;
         boolean forceAdventureMode = true;
         boolean disableCactusGrowth = true;
         boolean cactusSurviveAny = true;
@@ -128,6 +130,7 @@ public class WesterosCraftConfig {
                 blockWitherSpawn = data.blockWitherSpawn;
                 disableMushroomGrowFade = data.disableMushroomGrowFade;
                 mushroomSurviveAny = data.mushroomSurviveAny;
+                disableItemDrops = data.disableItemDrops;
                 forceAdventureMode = data.forceAdventureMode;
                 if (data.autoRestore != null) {
                     autoRestore = data.autoRestore;
