@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import westeroscraft.adventure.GameModeEnforcer;
 import westeroscraft.config.WesterosCraftConfig;
 import westeroscraft.restore.AutoRestoreManager;
+import westeroscraft.restriction.ItemRestrictionManager;
 
 public class WesterosCraftEssentials implements ModInitializer {
 	public static final String MOD_ID = "westeroscraft-essentials";
@@ -16,6 +17,12 @@ public class WesterosCraftEssentials implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		WesterosCraftConfig.load();
+
+		ItemRestrictionManager.initialize();
+
+		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> {
+			if (success) ItemRestrictionManager.reload();
+		});
 
 		GameModeEnforcer.init();
 
