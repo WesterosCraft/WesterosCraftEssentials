@@ -1,11 +1,13 @@
 package westeroscraft;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import westeroscraft.adventure.GameModeEnforcer;
+import westeroscraft.commands.WceReloadCommand;
 import westeroscraft.config.WesterosCraftConfig;
 import westeroscraft.restore.AutoRestoreManager;
 import westeroscraft.restriction.ItemRestrictionManager;
@@ -23,6 +25,10 @@ public class WesterosCraftEssentials implements ModInitializer {
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> {
 			if (success) ItemRestrictionManager.reload();
 		});
+
+		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
+			WceReloadCommand.register(dispatcher)
+		);
 
 		GameModeEnforcer.init();
 

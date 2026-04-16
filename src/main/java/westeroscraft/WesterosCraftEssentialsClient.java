@@ -16,9 +16,9 @@ public class WesterosCraftEssentialsClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        INSTANCE = this;
         PTimeCommand.register();
         PWeatherCommand.register();
         NVCommand.register();
-        INSTANCE = this;
     }
 }

@@ -5,11 +5,27 @@ import java.util.List;
 
 /**
  * One rule entry in item-restrictions.json.
- * Defines which items are restricted, for which groups, in which interaction modes.
+ * A rule can restrict items (by ID), specific blocks (by ID), or any block that opens a
+ * container menu — mix and match as needed. All three fields are optional; a rule needs at
+ * least one of items, blocks, or container_menu = true to be valid.
  */
 public class ItemRestrictionRule {
-    /** Item IDs this rule applies to (e.g. "minecraft:flint_and_steel") */
+    /** Item IDs this rule applies to (e.g. "minecraft:flint_and_steel"). Prefix with "!" for regex. */
     public List<String> items = new ArrayList<>();
+
+    /**
+     * Block IDs this rule applies to on right-click (e.g. "minecraft:chest").
+     * Prefix with "!" for regex. Fires regardless of what the player is holding.
+     * Only evaluated for "interact" mode.
+     */
+    public List<String> blocks = new ArrayList<>();
+
+    /**
+     * If true, this rule fires when the player right-clicks any block that would open a
+     * container menu (chest, furnace, barrel, hopper, shulker box, dispenser, dropper, etc.).
+     * Works with an empty hand. Only evaluated for "interact" mode.
+     */
+    public boolean container_menu = false;
 
     /**
      * Interaction modes to restrict: "use" (right-click in air/on entity),

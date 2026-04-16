@@ -15,8 +15,8 @@ public abstract class ClientLevelDataMixin {
     @Inject(at = @At("RETURN"), method = "getDayTime", cancellable = true)
     @Environment(EnvType.CLIENT)
     public void getDayTime(CallbackInfoReturnable<Long> cir) {
-        if(WesterosCraftEssentialsClient.INSTANCE.enabledTime) {
+        if(WesterosCraftEssentialsClient.INSTANCE != null && WesterosCraftEssentialsClient.INSTANCE.enabledTime) {
             cir.setReturnValue(WesterosCraftEssentialsClient.INSTANCE.time);
-        } else cir.cancel();
+        }
     }
 }

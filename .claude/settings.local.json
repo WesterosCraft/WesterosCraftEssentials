@@ -3,7 +3,17 @@
     "allow": [
       "WebSearch",
       "WebFetch(domain:github.com)",
-      "Bash(xargs cat:*)"
+      "Bash(xargs cat:*)",
+      "Bash(./gradlew build:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(./gradlew dependencies:*)",
+      "Bash(javap -p \".gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-48f5f74c97/1.21.1-loom.mappings.1_21_1.layered+hash.2198-v2/minecraft-merged-48f5f74c97-1.21.1-loom.mappings.1_21_1.layered+hash.2198-v2.jar\")",
+      "Bash(jar xf:*)",
+      "Bash(javap -p net/minecraft/world/inventory/Slot.class)",
+      "Bash(gh --version)",
+      "Read(//tmp/**)",
+      "Bash(unzip -q \"/c/Users/jacob/Code/WesterosCraftEssentials/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-48f5f74c97/1.21.1-loom.mappings.1_21_1.layered+hash.2198-v2/minecraft-merged-48f5f74c97-1.21.1-loom.mappings.1_21_1.layered+hash.2198-v2.jar\" \"net/minecraft/client/multiplayer/ClientLevel.class\" -d .)",
+      "Bash(javap -classpath \"net/minecraft/client/multiplayer/ClientLevel.class\" -cp \"/c/Users/jacob/Code/WesterosCraftEssentials/.gradle/loom-cache/minecraftMaven/net/minecraft/minecraft-merged-48f5f74c97/1.21.1-loom.mappings.1_21_1.layered+hash.2198-v2/minecraft-merged-48f5f74c97-1.21.1-loom.mappings.1_21_1.layered+hash.2198-v2.jar\" \"net.minecraft.client.multiplayer.ClientLevel\")"
     ]
   }
 }

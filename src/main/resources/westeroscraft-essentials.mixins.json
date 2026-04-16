@@ -2,11 +2,13 @@
 	"required": true,
 	"package": "westeroscraft.mixin",
 	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"ClientLevelDataMixin",
+		"ClientLevelMixin"
+	],
 	"mixins": [
 		"BambooBlockMixin",
 		"CactusBlockMixin",
-		"ClientLevelDataMixin",
-		"ClientLevelMixin",
 		"CropBlockMixin",
 		"DoorBlockMixin",
 		"FallingBlockMixin",

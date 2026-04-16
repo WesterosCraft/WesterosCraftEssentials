@@ -44,15 +44,24 @@ public class ItemRestrictionConfig {
     private static ItemRestrictionConfig createDefault() {
         ItemRestrictionConfig config = new ItemRestrictionConfig();
 
-        // Write an example rule with an empty items list so it has no effect until the admin fills it in.
-        // Copy this block and populate "items" to activate a restriction.
-        ItemRestrictionRule example = new ItemRestrictionRule();
-        example.items = new ArrayList<>();   // empty — rule is inactive until items are added
-        example.modes = new ArrayList<>(List.of("use", "interact"));
-        example.denied_groups = new ArrayList<>(List.of("default"));
-        example.allowed_groups = new ArrayList<>(List.of("moderator", "admin"));
-        example.message = "You don't have permission to use this item.";
-        config.rules.add(example);
+        // Example: block specific items. Inactive until items are added.
+        ItemRestrictionRule itemExample = new ItemRestrictionRule();
+        itemExample.items = new ArrayList<>();   // empty — inactive until items are added
+        itemExample.modes = new ArrayList<>(List.of("use", "interact"));
+        itemExample.denied_groups = new ArrayList<>(List.of("default"));
+        itemExample.allowed_groups = new ArrayList<>(List.of("moderator", "admin"));
+        itemExample.message = "You don't have permission to use this item.";
+        config.rules.add(itemExample);
+
+        // Example: block guests from opening any container (chest, furnace, barrel, etc.).
+        // Set denied_groups to activate (e.g. ["guest"]).
+        ItemRestrictionRule containerExample = new ItemRestrictionRule();
+        containerExample.container_menu = true;
+        containerExample.modes = new ArrayList<>(List.of("interact"));
+        containerExample.denied_groups = new ArrayList<>();  // empty — inactive until groups are added
+        containerExample.allowed_groups = new ArrayList<>();
+        containerExample.message = "Guests cannot open containers.";
+        config.rules.add(containerExample);
 
         try {
             Files.writeString(CONFIG_PATH, GSON.toJson(config));
