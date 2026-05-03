@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "westeroscraft-essentials",
+  "id": "westeroscraftessentials",
   "version": "${version}",
   "name": "WesterosCraft Essentials",
   "description": "WesterosCraftCore is a custom Fabric mod that handles various requirements for the WesterosCraft server",
