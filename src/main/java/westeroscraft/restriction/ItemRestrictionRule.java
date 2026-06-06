@@ -28,6 +28,12 @@ public class ItemRestrictionRule {
     public boolean container_menu = false;
 
     /**
+     * Block IDs exempt from this container_menu rule (e.g. allow chests while blocking every
+     * other container). Prefix with "!" for regex. Only meaningful when container_menu = true.
+     */
+    public List<String> container_menu_except = new ArrayList<>();
+
+    /**
      * Interaction modes to restrict: "use" (right-click in air/on entity),
      * "interact" (right-click on block), "attack" (left-click entity), or "all".
      */

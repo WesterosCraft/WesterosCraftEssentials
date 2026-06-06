@@ -1,7 +1,6 @@
 package westeroscraft;
 
 import net.fabricmc.api.ClientModInitializer;
-import westeroscraft.commands.NVCommand;
 import westeroscraft.commands.PTimeCommand;
 import westeroscraft.commands.PWeatherCommand;
 
@@ -19,6 +18,5 @@ public class WesterosCraftEssentialsClient implements ClientModInitializer {
         INSTANCE = this;
         PTimeCommand.register();
         PWeatherCommand.register();
-        NVCommand.register();
     }
 }

@@ -12,8 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -43,6 +45,20 @@ public class ItemRestrictionManager {
     private record PatternEntry(Pattern pattern, ItemRestrictionRule rule) {}
 
     /**
+     * A container_menu rule plus its precompiled exception matchers. A clicked block matching
+     * any exact ID or pattern is exempt from the rule (e.g. chests allowed, everything else blocked).
+     */
+    private record ContainerMenuEntry(ItemRestrictionRule rule, Set<String> exceptExact, List<Pattern> exceptPatterns) {
+        boolean isExcepted(String blockId) {
+            if (exceptExact.contains(blockId)) return true;
+            for (Pattern p : exceptPatterns) {
+                if (p.matcher(blockId).matches()) return true;
+            }
+            return false;
+        }
+    }
+
+    /**
      * Immutable snapshot of all lookup tables. Held in a single volatile field so that
      * a reload swaps all tables atomically.
      */
@@ -54,7 +70,7 @@ public class ItemRestrictionManager {
         Map<String, List<ItemRestrictionRule>> blockExact,
         List<PatternEntry> blockPatterns,
         // container_menu rules — fire whenever the clicked block has a MenuProvider
-        List<ItemRestrictionRule> containerMenuRules
+        List<ContainerMenuEntry> containerMenuRules
     ) {}
 
     private static volatile IndexSnapshot index = new IndexSnapshot(
@@ -82,7 +98,7 @@ public class ItemRestrictionManager {
 
         Map<String, List<ItemRestrictionRule>> newBlockExact = new HashMap<>();
         List<PatternEntry> newBlockPatterns = new ArrayList<>();
-        List<ItemRestrictionRule> newContainerMenuRules = new ArrayList<>();
+        List<ContainerMenuEntry> newContainerMenuRules = new ArrayList<>();
 
         for (ItemRestrictionRule rule : config.rules) {
             boolean hasItems = rule.items != null && !rule.items.isEmpty();
@@ -143,7 +159,23 @@ public class ItemRestrictionManager {
 
             // --- container_menu rules ---
             if (rule.container_menu && modes.contains("interact")) {
-                newContainerMenuRules.add(rule);
+                Set<String> exceptExact = new HashSet<>();
+                List<Pattern> exceptPatterns = new ArrayList<>();
+                if (rule.container_menu_except != null) {
+                    for (String block : rule.container_menu_except) {
+                        if (block.startsWith(PATTERN_PREFIX)) {
+                            String regex = block.substring(PATTERN_PREFIX.length());
+                            try {
+                                exceptPatterns.add(Pattern.compile(regex));
+                            } catch (PatternSyntaxException e) {
+                                LOGGER.warn("Invalid container_menu_except pattern '{}' in item-restrictions.json, skipping: {}", block, e.getMessage());
+                            }
+                        } else {
+                            exceptExact.add(block);
+                        }
+                    }
+                }
+                newContainerMenuRules.add(new ContainerMenuEntry(rule, exceptExact, exceptPatterns));
             }
         }
 
@@ -233,8 +265,9 @@ public class ItemRestrictionManager {
 
         // --- container_menu rules (fired when block opens a GUI) ---
         if (hasMenu) {
-            for (ItemRestrictionRule rule : snap.containerMenuRules()) {
-                if (isRuleApplied(player, rule)) return rule;
+            for (ContainerMenuEntry entry : snap.containerMenuRules()) {
+                if (entry.isExcepted(blockId)) continue;
+                if (isRuleApplied(player, entry.rule())) return entry.rule();
             }
         }
 

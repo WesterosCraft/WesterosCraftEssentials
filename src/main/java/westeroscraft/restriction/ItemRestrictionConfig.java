@@ -53,10 +53,11 @@ public class ItemRestrictionConfig {
         itemExample.message = "You don't have permission to use this item.";
         config.rules.add(itemExample);
 
-        // Example: block guests from opening any container (chest, furnace, barrel, etc.).
-        // Set denied_groups to activate (e.g. ["guest"]).
+        // Example: block guests from opening any container (chest, furnace, barrel, etc.)
+        // EXCEPT chests, which stay openable. Set denied_groups to activate (e.g. ["default"]).
         ItemRestrictionRule containerExample = new ItemRestrictionRule();
         containerExample.container_menu = true;
+        containerExample.container_menu_except = new ArrayList<>(List.of("minecraft:chest", "minecraft:trapped_chest", "minecraft:ender_chest"));
         containerExample.modes = new ArrayList<>(List.of("interact"));
         containerExample.denied_groups = new ArrayList<>();  // empty — inactive until groups are added
         containerExample.allowed_groups = new ArrayList<>();
